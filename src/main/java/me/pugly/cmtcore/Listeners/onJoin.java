@@ -8,20 +8,23 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.stream.Collectors;
+
 public class onJoin implements Listener {
 
     @EventHandler
     public void listener(PlayerJoinEvent e) {
 
+        CMTUser.registerUser(
+                CMTUser.create(e.getPlayer())
+                        .setTeam(CMTTeam.getTeam(ConfigHandler.getTeam(e.getPlayer())))
+        );
+
         if (ConfigHandler.getAllPlayers().contains(e.getPlayer().getName())) {
             e.getPlayer().addScoreboardTag("cmt");
 
-            CMTUser.registerUser(
-                CMTUser.create(e.getPlayer())
-                        .setTeam(CMTTeam.getTeam(ConfigHandler.getTeam(e.getPlayer())))
-            );
 
-            System.out.println(ConfigHandler.getTeam(e.getPlayer()).getName());
+
             ConfigHandler.getTeam(e.getPlayer()).addEntry(e.getPlayer().getName());
         }
 

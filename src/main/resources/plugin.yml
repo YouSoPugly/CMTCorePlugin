@@ -2,7 +2,7 @@ name: CMTCore
 version: ${project.version}
 main: me.pugly.cmtcore.CMTCore
 api-version: 1.16
-depend: []
+softdepend: [Citizens]
 commands:
   score:
     usage: /<command> <args>

@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.pugly</groupId>
-    <artifactId>CMTCore</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <artifactId>cmtcore</artifactId>
+    <version>1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>cmtcore</name>

@@ -10,6 +10,7 @@ import org.bukkit.scoreboard.Team;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ConfigHandler {
 
@@ -66,6 +67,12 @@ public class ConfigHandler {
 
     public static Team getTeam(Player p) {
         return playerTeamMap.get(p.getName());
+    }
+
+    public static Set<Team> getTeams() {
+        return config.getConfigurationSection("teams").getKeys(false).stream()
+                .map(s -> Bukkit.getScoreboardManager().getMainScoreboard().getTeam(s))
+                .collect(Collectors.toSet());
     }
 
 }

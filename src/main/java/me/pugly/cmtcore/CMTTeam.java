@@ -3,9 +3,8 @@ package me.pugly.cmtcore;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CMTTeam {
 
@@ -16,7 +15,7 @@ public class CMTTeam {
     private Team team;
     private String teamName = "Old Man";
     private Set<CMTUser> users = new HashSet<>();
-    private int score = 0;
+    private int score = -1;
 
     public CMTTeam(@NotNull Team t) {
         team = t;
@@ -34,9 +33,12 @@ public class CMTTeam {
     }
 
     public void updateScore() {
-        score = 0;
-        for (CMTUser u : users) {
-            score += u.getScore();
+        score = -1;
+        if (users.size() > 0) {
+            score = 0;
+            for (CMTUser u : users) {
+                score += u.getScore();
+            }
         }
     }
 
@@ -46,6 +48,21 @@ public class CMTTeam {
 
     public Set<CMTUser> getUsers() {
         return users;
+    }
+
+    public CMTUser getTopUser() {
+        if (users.size() == 0) {
+            return null;
+        }
+
+        CMTUser out = null;
+        for (CMTUser cs : users) {
+            if (out == null || cs.getScore() > out.getScore()) {
+                out = cs;
+            }
+        }
+
+        return out;
     }
 
     public String getTeamName() {
@@ -77,5 +94,23 @@ public class CMTTeam {
         for (Team t : teams.keySet()) {
             teams.get(t).updateScore();
         }
+    }
+
+    public static List<CMTTeam> sort() {
+        List<CMTTeam> out = new ArrayList<>();
+
+        Team[] keys = teams.keySet().toArray(new Team[0]);
+
+        for (int i = 0; i < keys.length; i++) {
+            if (out.size() == 0 || out.size() < i+1 || teams.get(keys[i]).getScore() < out.get(i).getScore()) {
+                out.add(i, teams.get(keys[i]));
+            }
+        }
+
+        return out;
+    }
+
+    public static void register(Set<Team> teams) {
+        teams.forEach(CMTTeam::getTeam);
     }
 }

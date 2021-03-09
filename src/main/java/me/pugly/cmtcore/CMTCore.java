@@ -1,5 +1,6 @@
 package me.pugly.cmtcore;
 
+import me.pugly.cmtcore.Citizens.ScoreNPCs;
 import me.pugly.cmtcore.Commands.CMTCommands.Reload;
 import me.pugly.cmtcore.Commands.Command;
 import me.pugly.cmtcore.Commands.CommandHandler;
@@ -31,6 +32,7 @@ public final class CMTCore extends JavaPlugin {
         saveConfig();
 
         ConfigHandler.reloadConfig();
+        CMTTeam.register(ConfigHandler.getTeams());
 
         cmtCommand = new CommandHandler("cmt", this)
                 .registerCommand(new Reload());
@@ -43,11 +45,19 @@ public final class CMTCore extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new onJoin(), this);
 
-//        if(getServer().getPluginManager().getPlugin("Citizens") == null || getServer().getPluginManager().getPlugin("Citizens").isEnabled() == false) {
-//            getLogger().log(Level.SEVERE, "Citizens 2.0 not found or not enabled");
-//            getServer().getPluginManager().disablePlugin(this);
-//            return;
-//        }
+        if(getServer().getPluginManager().getPlugin("Citizens") == null || getServer().getPluginManager().getPlugin("Citizens").isEnabled() == false) {
+            getLogger().log(Level.SEVERE, "Citizens 2.0 not found or not enabled, disabling npc function.");
+        } else {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+                ScoreNPCs.updateTeamBoard();
+                ScoreNPCs.updateIndBoard();
+            }, 0L, 200L);
+        }
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            CMTTeam.updateAllTeams();
+            CMTUser.getAllPlayers().forEach(p -> CMTUser.getUser(p).updateSidebar());
+        }, 0L, 10L);
     }
 
     @Override
