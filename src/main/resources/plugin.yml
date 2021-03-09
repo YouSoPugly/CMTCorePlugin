@@ -2,3 +2,9 @@ name: CMTCore
 version: ${project.version}
 main: me.pugly.cmtcore.CMTCore
 api-version: 1.16
+depend: []
+commands:
+  score:
+    usage: /<command> <args>
+  cmt:
+    usage: /<command> <args>

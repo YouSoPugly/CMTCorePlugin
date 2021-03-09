@@ -1,0 +1,48 @@
+prefix: '&8CMT &7»&f'
+no-permission-message: '&cYou do not have permission to execute this command.'
+scoreboard-title: '&7&lCMT Gaming'
+#
+#Scoreboards
+#
+scoreboard:
+  - '&cLine one'
+  - '&6Line two'
+  - 'Line three'
+  - '%player-score%'
+  - '%team-score%'
+#
+staff-scoreboard:
+  - '&cLine one'
+  - '&6Line two'
+  - 'Line three'
+  - '%player-score%'
+  - '%team-score%'
+#
+# Team Setup
+# Add all of the players below in their respective team
+#
+teams:
+  red:
+    - 'YouSoPugly'
+  blue:
+    - 'YouSoPugly'
+  green:
+    - 'YouSoPugly'
+  pink:
+    - 'YouSoPugly'
+  lime:
+    - 'YouSoPugly'
+  yellow:
+    - 'YouSoPugly'
+  gray:
+    - 'YouSoPugly'
+  white:
+    - 'YouSoPugly'
+  purple:
+    - 'YouSoPugly'
+  orange:
+    - 'YouSoPugly'
+  cyan:
+    - 'YouSoPugly'
+  light_blue:
+    - 'YouSoPugly'
