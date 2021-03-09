@@ -13,13 +13,11 @@ public class CMTTeam {
     //
 
     private Team team;
-    private String teamName = "Old Man";
     private Set<CMTUser> users = new HashSet<>();
     private int score = -1;
 
     public CMTTeam(@NotNull Team t) {
         team = t;
-        teamName = team.getDisplayName();
 
         teams.put(t, this);
     }
@@ -66,7 +64,7 @@ public class CMTTeam {
     }
 
     public String getTeamName() {
-        return teamName;
+        return team.getDisplayName();
     }
 
     public Team getTeam() {
@@ -99,12 +97,21 @@ public class CMTTeam {
     public static List<CMTTeam> sort() {
         List<CMTTeam> out = new ArrayList<>();
 
-        Team[] keys = teams.keySet().toArray(new Team[0]);
+        List<CMTTeam> cmtTeams = new ArrayList<>();
+        for (Team t : teams.keySet())
+            cmtTeams.add(teams.get(t));
 
-        for (int i = 0; i < keys.length; i++) {
-            if (out.size() == 0 || out.size() < i+1 || teams.get(keys[i]).getScore() < out.get(i).getScore()) {
-                out.add(i, teams.get(keys[i]));
-            }
+        for (CMTTeam t : cmtTeams) {
+            for (int i = 0; i < out.size(); i++)
+                if (t.getScore() > out.get(i).getScore()) {
+                    CMTTeam temp = out.get(i);
+                    out.add(i, temp);
+                    out.set(i, t);
+                    break;
+                }
+
+            if (!out.contains(t))
+                out.add(t);
         }
 
         return out;

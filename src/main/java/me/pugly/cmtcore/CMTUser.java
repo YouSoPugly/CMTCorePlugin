@@ -50,7 +50,9 @@ public class CMTUser {
     }
 
     public void updateSidebar() {
-        objective.unregister();
+        if (objective != null)
+            objective.unregister();
+
         objective = scoreboard.registerNewObjective("sidebar", "dummy", TextUtils.colorize(ConfigHandler.getScoreboardName()));
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 

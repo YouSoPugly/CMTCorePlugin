@@ -2,21 +2,30 @@ prefix: '&8CMT &7»&f'
 no-permission-message: '&cYou do not have permission to execute this command.'
 scoreboard-title: '&7&lCMT Gaming'
 #
-#Scoreboards
+# Scoreboards
 #
 scoreboard:
-  - '&cLine one'
-  - '&6Line two'
-  - 'Line three'
-  - '%player-score%'
-  - '%team-score%'
+  - '  '
+  - '&7&lPersonal Score:'
+  - '   &e%player-score% Points'
+  - ''
+  - '&7&lTeam Score:'
+  - '   &e%team-score% Points'
+  - ' '
+  - '&7&lLeaderboard:'
+  - '  &e%team-1-score% &7| %team-1%'
+  - '  &e%team-2-score% &7| %team-2%'
+  - '  &e%team-3-score% &7| %team-3%'
 #
 staff-scoreboard:
-  - '&cLine one'
-  - '&6Line two'
-  - 'Line three'
-  - '%player-score%'
-  - '%team-score%'
+  - ''
+  - '&7&lLeaderboard:'
+  - '  &e%team-1-score% &7| %team-1%'
+  - '  &e%team-2-score% &7| %team-2%'
+  - '  &e%team-3-score% &7| %team-3%'
+  - '  &e%team-4-score% &7| %team-4%'
+  - '  &e%team-5-score% &7| %team-5%'
+  - ' '
 #
 # Team Setup
 # Add all of the players below in their respective team

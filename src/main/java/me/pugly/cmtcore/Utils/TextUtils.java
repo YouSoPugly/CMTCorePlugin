@@ -31,11 +31,12 @@ public class TextUtils {
     public static String fix(String message, CMTUser user) {
         String out = colorize(message);
         out = out.replaceAll("%player-score%", "" + user.getScore());
-        out = out.replaceAll("%team-score%", "" + user.getTeam());
+        //out = out.replaceAll("%team-score%", "" + user.getTeam().getScore());
         out = out.replaceAll("%player%", "" + user.getPlayer().getName());
-        out = out.replaceAll("%team%", "" + user.getTeam().getTeamName());
+        //out = out.replaceAll("%team%", "" + user.getTeam().getTeamName());
 
         List<CMTTeam> sorted = CMTTeam.sort();
+
         out = out.replaceAll("%team-1%", "" + sorted.get(0).getTeamName());
         out = out.replaceAll("%team-2%", "" + sorted.get(1).getTeamName());
         out = out.replaceAll("%team-3%", "" + sorted.get(2).getTeamName());

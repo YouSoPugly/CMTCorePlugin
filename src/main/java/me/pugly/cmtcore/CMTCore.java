@@ -4,10 +4,7 @@ import me.pugly.cmtcore.Citizens.ScoreNPCs;
 import me.pugly.cmtcore.Commands.CMTCommands.Reload;
 import me.pugly.cmtcore.Commands.Command;
 import me.pugly.cmtcore.Commands.CommandHandler;
-import me.pugly.cmtcore.Commands.ScoreCommands.Add;
-import me.pugly.cmtcore.Commands.ScoreCommands.Get;
-import me.pugly.cmtcore.Commands.ScoreCommands.Remove;
-import me.pugly.cmtcore.Commands.ScoreCommands.Set;
+import me.pugly.cmtcore.Commands.ScoreCommands.*;
 import me.pugly.cmtcore.Files.ConfigHandler;
 import me.pugly.cmtcore.Listeners.onJoin;
 import org.bukkit.Bukkit;
@@ -21,6 +18,7 @@ public final class CMTCore extends JavaPlugin {
     private static JavaPlugin plugin;
     private static CommandHandler cmtCommand;
     private static CommandHandler scoreCommand;
+    private static boolean citizens = false;
 
     @Override
     public void onEnable() {
@@ -41,13 +39,15 @@ public final class CMTCore extends JavaPlugin {
                 .registerCommand(new Add())
                 .registerCommand(new Get())
                 .registerCommand(new Remove())
-                .registerCommand(new Set());
+                .registerCommand(new Set())
+                .registerCommand(new Refresh());
 
         Bukkit.getPluginManager().registerEvents(new onJoin(), this);
 
-        if(getServer().getPluginManager().getPlugin("Citizens") == null || getServer().getPluginManager().getPlugin("Citizens").isEnabled() == false) {
+        if(getServer().getPluginManager().getPlugin("Citizens") == null || !getServer().getPluginManager().getPlugin("Citizens").isEnabled()) {
             getLogger().log(Level.SEVERE, "Citizens 2.0 not found or not enabled, disabling npc function.");
         } else {
+            citizens = true;
             Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
                 ScoreNPCs.updateTeamBoard();
                 ScoreNPCs.updateIndBoard();
@@ -67,5 +67,9 @@ public final class CMTCore extends JavaPlugin {
 
     public static JavaPlugin getPlugin() {
         return plugin;
+    }
+
+    public static boolean isCitizens() {
+        return citizens;
     }
 }
