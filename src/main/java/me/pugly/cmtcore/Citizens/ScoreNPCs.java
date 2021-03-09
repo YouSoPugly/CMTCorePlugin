@@ -30,7 +30,7 @@ public class ScoreNPCs {
 
         for (int i = 0; i < 12; i++) {
 
-            CMTTeam team = sortedTeams.get(i);
+            CMTTeam team = sortedTeams.get(11-i);
 
             npcs[i].setAlwaysUseNameHologram(true);
 
@@ -38,14 +38,11 @@ public class ScoreNPCs {
 
             npcs[i].getOrAddTrait(SkinTrait.class).setSkinName("Svenskpungkula");
 
-            if (sortedTeams.get(i) != null)
-                colorPodium(npcs[i].getStoredLocation(), team.getTeam().getName());
+            colorPodium(npcs[i].getStoredLocation(), team.getTeam().getName());
 
-            if (sortedTeams.get(i) != null) {
-                if (sortedTeams.get(i).getUsers().size() > 0) {
-                    CMTUser user = (CMTUser) team.getUsers().toArray()[random.nextInt(team.getUsers().toArray().length)];
-                    npcs[i].getOrAddTrait(SkinTrait.class).setSkinName(user.getPlayer().getName());
-                }
+            if (team.getUsers().size() > 0) {
+                CMTUser user = (CMTUser) team.getUsers().toArray()[random.nextInt(team.getUsers().toArray().length)];
+                npcs[i].getOrAddTrait(SkinTrait.class).setSkinName(user.getPlayer().getName());
             }
         }
     }

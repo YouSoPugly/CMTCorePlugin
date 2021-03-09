@@ -51,13 +51,13 @@ public final class CMTCore extends JavaPlugin {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
                 ScoreNPCs.updateTeamBoard();
                 ScoreNPCs.updateIndBoard();
-            }, 0L, 200L);
+            }, 0L, 1200L);
         }
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             CMTTeam.updateAllTeams();
             CMTUser.getAllPlayers().forEach(p -> CMTUser.getUser(p).updateSidebar());
-        }, 0L, 10L);
+        }, 0L, 20L);
     }
 
     @Override

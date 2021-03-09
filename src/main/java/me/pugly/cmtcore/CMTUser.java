@@ -58,7 +58,7 @@ public class CMTUser {
 
         List<String> lines = ConfigHandler.getPlayerScoreboard();
 
-        if (player.hasPermission("cmt.score")) {
+        if (!contestant) {
             lines = ConfigHandler.getStaffScoreboard();
         }
 
@@ -154,12 +154,21 @@ public class CMTUser {
     public static List<CMTUser> sortContestants() {
         List<CMTUser> out = new ArrayList<>();
 
-        Player[] keys = users.keySet().toArray(new Player[0]);
+        List<CMTUser> cmtUsers = new ArrayList<>();
+        for (Player p : users.keySet())
+            cmtUsers.add(users.get(p));
 
-        for (int i = 0; i < keys.length; i++) {
-            if (out.size() == 0 || out.size() < i+1 || users.get(keys[i]).getScore() < out.get(i).getScore()) {
-                out.add(i, users.get(keys[i]));
-            }
+        for (CMTUser u : cmtUsers) {
+            for (int i = 0; i < out.size(); i++)
+                if (u.getScore() > out.get(i).getScore()) {
+                    CMTUser temp = out.get(i);
+                    out.add(i, temp);
+                    out.set(i, u);
+                    break;
+                }
+
+            if (!out.contains(u))
+                out.add(u);
         }
 
         return out;
