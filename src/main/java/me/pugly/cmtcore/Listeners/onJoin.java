@@ -15,18 +15,15 @@ public class onJoin implements Listener {
     @EventHandler
     public void listener(PlayerJoinEvent e) {
 
-        CMTUser.registerUser(
-                CMTUser.create(e.getPlayer())
-                        .setTeam(CMTTeam.getTeam(ConfigHandler.getTeam(e.getPlayer())))
-        );
+            CMTUser.create(e.getPlayer().getName())
+                    .setTeam(CMTTeam.getTeam(ConfigHandler.getTeam(e.getPlayer())))
+                    .newSidebar();
 
         if (ConfigHandler.getAllPlayers().contains(e.getPlayer().getName())) {
             e.getPlayer().addScoreboardTag("cmt");
-
-
-
             ConfigHandler.getTeam(e.getPlayer()).addEntry(e.getPlayer().getName());
         }
+
 
     }
 

@@ -23,10 +23,12 @@ public class Remove extends Command {
 
         if (args.length <= 1 || PlayerUtils.getSelectorPlayers(sender, args[1]) == null) {
             sender.sendMessage(ConfigHandler.getPrefix() + "Please enter a valid player.");
+            return;
         }
 
         if (args.length == 2) {
             sender.sendMessage(ConfigHandler.getPrefix() + "Please enter an amount to remove.");
+            return;
         }
 
         int amount = 0;
@@ -35,11 +37,12 @@ public class Remove extends Command {
             amount = Integer.parseInt(args[2]);
         } catch (Exception e) {
             sender.sendMessage(ConfigHandler.getPrefix() + "Please enter a valid amount.");
+            return;
         }
 
         for (Player p : PlayerUtils.getSelectorPlayers(sender, args[1])) {
-            CMTUser.getUser(p).removeScore(amount);
-            sender.sendMessage(ConfigHandler.getPrefix() + "Set " + p.getName() + "'s score to " + CMTUser.getUser(p).getScore() + ".");
+            CMTUser.getUser(p.getName()).removeScore(amount);
+            sender.sendMessage(ConfigHandler.getPrefix() + "Set " + p.getName() + "'s score to " + CMTUser.getUser(p.getName()).getScore() + ".");
         }
     }
 

@@ -3,13 +3,14 @@ package me.pugly.cmtcore;
 import me.pugly.cmtcore.Files.ConfigHandler;
 import me.pugly.cmtcore.Utils.TextUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CMTUser {
 
@@ -19,17 +20,18 @@ public class CMTUser {
 
     private int score = 0;
     private CMTTeam team;
-    private Player player;
-    private Scoreboard scoreboard;
-    private Objective objective;
+    private String player;
+    private Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+    private Objective objective = null;
     private boolean contestant = false;
 
-    public CMTUser(Player p) {
+    public CMTUser(String p) {
         this.player = p;
         users.put(p, this);
 
-        scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        p.setScoreboard(scoreboard);
+        if (ConfigHandler.getAllPlayers().contains(p))
+            contestant = true;
+
         updateSidebar();
     }
 
@@ -42,7 +44,7 @@ public class CMTUser {
     }
 
     public Player getPlayer() {
-        return player;
+        return Bukkit.getPlayer(player);
     }
 
     public int getTeamScore() {
@@ -50,6 +52,7 @@ public class CMTUser {
     }
 
     public void updateSidebar() {
+
         if (objective != null)
             objective.unregister();
 
@@ -75,11 +78,19 @@ public class CMTUser {
         }
     }
 
+    public boolean isContestant() {
+        return contestant;
+    }
+
+    public Scoreboard getScoreboard() {
+        return scoreboard;
+    }
+
     //
     //              BUILDER
     //
 
-    public static CMTUser create(Player p) {
+    public static CMTUser create(String p) {
         if (users.containsKey(p))
             return getUser(p);
 
@@ -102,6 +113,8 @@ public class CMTUser {
     }
 
     public CMTUser setTeam(CMTTeam team) {
+        if (team == null)
+            return this;
         if (this.team != null) {
             this.team.removeUser(this);
         }
@@ -115,48 +128,56 @@ public class CMTUser {
         return this;
     }
 
+    public CMTUser newSidebar() {
+        this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Bukkit.getPlayer(player).setScoreboard(scoreboard);
+
+        return this;
+    }
+
     //
     //              STATIC METHODS
     //
 
-    private static HashMap<Player, CMTUser> users = new HashMap<>();
+    private static final HashMap<String, CMTUser> users = new HashMap<>();
 
-    public static CMTUser getUser(Player p) {
-        if (users.get(p) == null) {
-            registerUser(create(p));
+    public static CMTUser getUser(String p) {
+        if (users.get(p) == null && Bukkit.getPlayer(p) != null) {
+            create(p);
         }
 
         return users.get(p);
     }
 
-    public static void registerUser(CMTUser user) {
-        if (!users.containsKey(user.getPlayer()))
-            users.put(user.getPlayer(), user);
-    }
-
     public static void unregisterUser(CMTUser user) {
-        users.remove(user.getPlayer());
+        users.remove(user.getPlayer().getName());
     }
 
     public static Set<Player> getAllPlayers() {
-        return users.keySet();
+        return users.keySet().stream().map(Bukkit::getPlayer).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
     public static Set<Player> getAllContestants() {
         Set<Player> out = new HashSet<>();
-        for (Player p : users.keySet()) {
+        for (String p : users.keySet()) {
             if (users.get(p).contestant)
-                out.add(p);
+                out.add(Bukkit.getPlayer(p));
         }
-        return out;
+        return out.stream().filter(Objects::nonNull).collect(Collectors.toSet());
+    }
+
+    public static Set<String> getUsernames() {
+        return users.keySet();
     }
 
     public static List<CMTUser> sortContestants() {
         List<CMTUser> out = new ArrayList<>();
 
         List<CMTUser> cmtUsers = new ArrayList<>();
-        for (Player p : users.keySet())
+        for (String p : users.keySet())
             cmtUsers.add(users.get(p));
+
+        cmtUsers = cmtUsers.stream().filter(CMTUser::isContestant).collect(Collectors.toList());
 
         for (CMTUser u : cmtUsers) {
             for (int i = 0; i < out.size(); i++)

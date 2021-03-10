@@ -2,6 +2,8 @@ package me.pugly.cmtcore;
 
 import me.pugly.cmtcore.Citizens.ScoreNPCs;
 import me.pugly.cmtcore.Commands.CMTCommands.Reload;
+import me.pugly.cmtcore.Commands.CMTCommands.Teams;
+import me.pugly.cmtcore.Commands.CMTCommands.Users;
 import me.pugly.cmtcore.Commands.Command;
 import me.pugly.cmtcore.Commands.CommandHandler;
 import me.pugly.cmtcore.Commands.ScoreCommands.*;
@@ -33,7 +35,9 @@ public final class CMTCore extends JavaPlugin {
         CMTTeam.register(ConfigHandler.getTeams());
 
         cmtCommand = new CommandHandler("cmt", this)
-                .registerCommand(new Reload());
+                .registerCommand(new Reload())
+                .registerCommand(new Teams())
+                .registerCommand(new Users());
 
         scoreCommand = new CommandHandler("score", this)
                 .registerCommand(new Add())
@@ -56,7 +60,7 @@ public final class CMTCore extends JavaPlugin {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             CMTTeam.updateAllTeams();
-            CMTUser.getAllPlayers().forEach(p -> CMTUser.getUser(p).updateSidebar());
+            CMTUser.getAllPlayers().forEach(p -> CMTUser.getUser(p.getName()).updateSidebar());
         }, 0L, 20L);
     }
 

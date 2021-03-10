@@ -9,6 +9,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -72,6 +73,7 @@ public class ConfigHandler {
     public static Set<Team> getTeams() {
         return config.getConfigurationSection("teams").getKeys(false).stream()
                 .map(s -> Bukkit.getScoreboardManager().getMainScoreboard().getTeam(s))
+                .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
     }
 

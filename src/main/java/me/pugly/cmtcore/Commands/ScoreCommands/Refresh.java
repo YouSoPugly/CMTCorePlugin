@@ -19,7 +19,7 @@ public class Refresh extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         CMTTeam.updateAllTeams();
-        CMTUser.getAllPlayers().forEach(p -> CMTUser.getUser(p).updateSidebar());
+        CMTUser.getAllPlayers().forEach(p -> CMTUser.getUser(p.getName()).updateSidebar());
         if (CMTCore.isCitizens()) {
             ScoreNPCs.updateTeamBoard();
             ScoreNPCs.updateIndBoard();

@@ -64,7 +64,7 @@ public class CMTTeam {
     }
 
     public String getTeamName() {
-        return team.getDisplayName();
+        return (team == null) ? "NULL" : team.getDisplayName();
     }
 
     public Team getTeam() {
@@ -77,9 +77,12 @@ public class CMTTeam {
 
     private static HashMap<Team, CMTTeam> teams = new HashMap<>();
 
-    public static CMTTeam getTeam(@NotNull Team t) {
+    public static CMTTeam getTeam(Team t) {
+        if (t == null)
+            return null;
+
         if (teams.get(t) == null)
-            teams.put(t, new CMTTeam(t));
+            new CMTTeam(t);
 
         return teams.get(t);
     }
@@ -118,6 +121,10 @@ public class CMTTeam {
     }
 
     public static void register(Set<Team> teams) {
-        teams.forEach(CMTTeam::getTeam);
+        for (Team t : teams) {
+            if (t != null) {
+                getTeam(t);
+            }
+        }
     }
 }

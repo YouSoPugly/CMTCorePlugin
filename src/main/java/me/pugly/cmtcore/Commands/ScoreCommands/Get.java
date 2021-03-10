@@ -19,10 +19,12 @@ public class Get extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if (args.length < 2 || Bukkit.getPlayer(args[1]) == null)
+        if (args.length < 2 || Bukkit.getPlayer(args[1]) == null) {
             sender.sendMessage(ConfigHandler.getPrefix() + "Please enter a valid player.");
+            return;
+        }
 
-        sender.sendMessage(ConfigHandler.getPrefix() + args[1] + " has " + CMTUser.getUser(Bukkit.getPlayer(args[1])).getScore() + " points.");
+        sender.sendMessage(ConfigHandler.getPrefix() + args[1] + " has " + CMTUser.getUser(args[1]).getScore() + " points.");
     }
 
     @Override

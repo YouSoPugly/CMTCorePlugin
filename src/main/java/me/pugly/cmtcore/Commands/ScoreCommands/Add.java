@@ -22,10 +22,12 @@ public class Add extends Command {
 
         if (args.length < 2 || PlayerUtils.getSelectorPlayers(sender, args[1]) == null) {
             sender.sendMessage(ConfigHandler.getPrefix() + "Please enter a valid player.");
+            return;
         }
 
         if (args.length == 2) {
             sender.sendMessage(ConfigHandler.getPrefix() + "Please enter an amount to add.");
+            return;
         }
 
         int amount = 0;
@@ -38,8 +40,8 @@ public class Add extends Command {
         }
 
         for (Player p : PlayerUtils.getSelectorPlayers(sender, args[1])) {
-            CMTUser.getUser(p).addScore(amount);
-            sender.sendMessage(ConfigHandler.getPrefix() + "Set " + p.getName() + "'s score to " + CMTUser.getUser(p).getScore() + ".");
+            CMTUser.getUser(p.getName()).addScore(amount);
+            sender.sendMessage(ConfigHandler.getPrefix() + "Set " + p.getName() + "'s score to " + CMTUser.getUser(p.getName()).getScore() + ".");
         }
     }
 

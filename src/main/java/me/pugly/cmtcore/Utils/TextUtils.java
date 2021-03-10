@@ -30,10 +30,14 @@ public class TextUtils {
 
     public static String fix(String message, CMTUser user) {
         String out = colorize(message);
+
         out = out.replaceAll("%player-score%", "" + user.getScore());
-        //out = out.replaceAll("%team-score%", "" + user.getTeam().getScore());
         out = out.replaceAll("%player%", "" + user.getPlayer().getName());
-        //out = out.replaceAll("%team%", "" + user.getTeam().getTeamName());
+
+        if (user.isContestant()) {
+            out = out.replaceAll("%team-score%", "" + user.getTeam().getScore());
+            out = out.replaceAll("%team%", "" + user.getTeam().getTeamName());
+        }
 
         List<CMTTeam> sorted = CMTTeam.sort();
 
